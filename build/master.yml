@@ -13,7 +13,6 @@ queue:
   - vstest
 
 variables:
-  Container: 'app'
   BuildConfiguration: 'release'
   BuildPlatform: 'any cpu'
 
