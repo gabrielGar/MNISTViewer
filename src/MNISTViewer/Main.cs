@@ -104,8 +104,7 @@ namespace MNISTViewer
                 if (response.Content != null)
                 {
                     var scoreJson = response.Content.ReadAsStringAsync().Result;
-                    var score = JsonConvert.DeserializeObject<Score>(
-                        JsonConvert.DeserializeObject(scoreJson).ToString());
+                    var score = JsonConvert.DeserializeObject<Score>(scoreJson);
                                         
                     sb.AppendLine("Scores:");
                     int i = 0;

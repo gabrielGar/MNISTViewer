@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Uri" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://138.91.120.69:80/score</Value>
+      <Value Profile="(Default)">http://40.87.9.218:80/score</Value>
     </Setting>
   </Settings>
 </SettingsFile>
