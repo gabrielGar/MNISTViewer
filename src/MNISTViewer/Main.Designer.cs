@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.hostCanvas = new System.Windows.Forms.Integration.ElementHost();
             this.textUrl = new System.Windows.Forms.TextBox();
             this.buttonRecognize = new System.Windows.Forms.Button();
@@ -145,6 +146,7 @@
             this.Controls.Add(this.buttonClear);
             this.Controls.Add(this.buttonRecognize);
             this.Controls.Add(this.textUrl);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(964, 547);
             this.Name = "Main";
             this.Text = "MNIST Viewer";
