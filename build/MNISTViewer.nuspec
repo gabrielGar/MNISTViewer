@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">  
+    <metadata>
+        <id>JobTracker</id>
+        <version>$version$</version>
+        <authors>Seth Juarez</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>MNIST Viewer Software</description>
+    </metadata>
+    <files>
+        <file src="..\Src\MNISTViewer\bin\Release\*.dll" target="lib\net45\"></file>
+        <file src="..\Src\MNISTViewer\bin\Release\*.exe" exclude="**\*.vshost.exe" target="lib\net45\"></file>
+        <file src="..\Src\MNISTViewer\bin\Release\*.config" target="lib\net45\"></file>
+    </files>
+</package>

@@ -1,0 +1,94 @@
+# SET ‘StorageConnectionString’
+
+name: 1.0$(Rev:.r)
+
+trigger: 
+- master
+
+queue:
+  name: Hosted VS2017
+  demands: 
+  - msbuild
+  - visualstudio
+  - vstest
+
+variables:
+  Container: 'app'
+  BuildConfiguration: 'release'
+  BuildPlatform: 'any cpu'
+
+steps:
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.4.1'
+  inputs:
+    versionSpec: 4.4.1
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '**\*.sln'
+
+- task: VSBuild@1
+  displayName: 'Build solution **\*.sln'
+  inputs:
+    solution: '**\*.sln'
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+
+- task: VSTest@2
+  displayName: 'VsTest - testAssemblies'
+  inputs:
+    testAssemblyVer2: |
+     **\$(BuildConfiguration)\*test*.dll
+     !**\obj\**
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  inputs:
+    SearchPattern: '**\bin\**\*.pdb'
+    PublishSymbols: false
+  continueOnError: true
+
+- task: NuGetCommand@2
+  displayName: 'NuGet pack'
+  inputs:
+    command: pack
+    packagesToPack: build/MNISTViewer.nuspec
+    packDestination: Build/Output
+    versioningScheme: byBuildNumber
+
+- task: powershell@2
+  displayName: 'Copy from Blob Storage'
+  inputs:
+    targetType: filePath
+    filePath: build/CopyReleaseFolder.ps1
+    arguments: '-containerName "$(Container)" -destinationFolder "Build/Package" -connectionString "$(StorageConnectionString)"'
+  
+- task: powershell@2
+  displayName: 'Squirrelify'
+  inputs:
+    targetType: filePath
+    filePath: build/SquirrelBuild.ps1
+    arguments: '-nugetPackage "Build/Output/$(system.teamProject).$(Build.BuildNumber).nupkg" -releaseFolder "Build/Package"'
+
+- task: powershell@2
+  displayName: 'Copy to Blob Storage'
+  inputs:
+    targetType: filePath
+    filePath: build/CopyToBlobStorage.ps1
+    arguments: '-containerName "$(Container)" -sourceFolder "Build/Package" -connectionString "$(StorageConnectionString)"'
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: '**\bin\$(BuildConfiguration)\**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+

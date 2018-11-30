@@ -1,0 +1,17 @@
+
+*scc
+*.user
+*.suo
+*.orig
+*.dat
+*.log
+*.bak
+*.licx
+[Tt]humbs.db
+obj/
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
+TestResults/
+.vs/
+packages/
