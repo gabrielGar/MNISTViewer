@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -31,6 +32,9 @@ namespace MNISTViewer
             labelPrediction.Text = "";
             labelVersion.Text = $"Version {Application.ProductVersion}";
             linkUpdates.Visible = false;
+
+            // begin update check
+            new Thread(CheckUpdate).Start();
         }
 
         private async void CheckUpdate()
