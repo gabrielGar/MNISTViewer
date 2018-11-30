@@ -17,6 +17,11 @@ variables:
   BuildPlatform: 'any cpu'
 
 steps:
+- task: bleddynrichards.Assembly-Info-Task.Assembly-Info-Task.Assembly-Info-Task@1
+  displayName: 'Set Assembly Manifest Data'
+  inputs:
+    VersionNumber: '$(Build.BuildNumber)'
+
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 4.4.1'
   inputs:
