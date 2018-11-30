@@ -21,6 +21,7 @@ steps:
   displayName: 'Set Assembly Manifest Data'
   inputs:
     VersionNumber: '$(Build.BuildNumber)'
+    FileVersionNumber: '$(Build.BuildNumber)'
 
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 4.4.1'
