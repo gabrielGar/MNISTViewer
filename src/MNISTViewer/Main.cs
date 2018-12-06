@@ -1,7 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.ML.OnnxRuntime;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
+using System.Numerics.Tensors;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,12 +13,14 @@ using System.Windows.Forms;
 using System.Windows.Ink;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Linq;
 
 namespace MNISTViewer
 {
     public partial class Main : Form
     {
         private InkCanvas _inkCanvas;
+        private InferenceSession _session = null;
         public Main()
         {
             InitializeComponent();
@@ -85,12 +90,46 @@ namespace MNISTViewer
 
         private void Predict(float[] digit)
         {
-            if (string.IsNullOrEmpty(textUrl.Text) || string.IsNullOrWhiteSpace(textUrl.Text))
+            Score score;
+            if (_session == null)
+                score = PredictWeb(textUrl.Text, digit);
+            else
+                score = PredictLocal(digit);
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Reponse Code: {score.Status}");
+
+            if (!score.Empty)
             {
-                MessageBox.Show("Invalid Scoring Endpoint!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                
+                sb.AppendLine("Scores:");
+                int i = 0;
+                foreach (var s in score.Scores)
+                    sb.AppendLine($"\t{i++}: {s:P}");
+
+                sb.AppendLine($"Prediction: {score.Prediction}");
+                sb.AppendLine($"Time: {score.Time}");
+                labelPrediction.Text = score.Prediction.ToString();
+                
+            }
+            else
+            {
+                labelPrediction.Text = "";
             }
 
+            textResponse.Text = "";
+            textResponse.Text = sb.ToString();
+        }
+
+        private Score PredictWeb(string uri, float[] digit)
+        {
+            if (string.IsNullOrEmpty(uri) || string.IsNullOrWhiteSpace(uri))
+            {
+                MessageBox.Show("Invalid Scoring Endpoint!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new Score { Status = "Invalid Endpoint" };
+            }
+                    
             using (HttpClient client = new HttpClient())
             {
                 var content = new StringContent(
@@ -98,28 +137,45 @@ namespace MNISTViewer
                     Encoding.UTF8,
                     "application/json");
 
-                var response = client.PostAsync(textUrl.Text, content).Result;
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine($"Reponse Code: {response.StatusCode}");
+                var response = client.PostAsync(uri, content).Result;
+                
                 if (response.Content != null)
                 {
                     var scoreJson = response.Content.ReadAsStringAsync().Result;
                     var score = JsonConvert.DeserializeObject<Score>(scoreJson);
-                                        
-                    sb.AppendLine("Scores:");
-                    int i = 0;
-                    foreach (var s in score.Scores)
-                        sb.AppendLine($"\t{i++}: {s:P}");
-
-                    sb.AppendLine($"Prediction: {score.Prediction}");
-                    sb.AppendLine($"Time: {score.Time}");
-
-                    labelPrediction.Text = score.Prediction.ToString();
+                    score.Empty = false;
+                    score.Status = response.StatusCode.ToString();
+                    return score;
                 }
-
-                textResponse.Text = "";
-                textResponse.Text = sb.ToString();
+                else
+                    return new Score { Status = response.StatusCode.ToString() };
             }
+        }
+
+        private Score PredictLocal(float[] digit)
+        {
+            var now = DateTime.Now;
+            Tensor<float> x = new DenseTensor<float>(digit.Length);
+
+            // normalize
+            for (int i = 0; i < digit.Length; i++) x[i] = digit[i] / 255;
+
+            var input = new List<NamedOnnxValue>() {
+                NamedOnnxValue.CreateFromTensor("0", x)
+            };
+
+            var prediction = _session.Run(input)
+                                     .First()
+                                     .AsTensor<float>()
+                                     .ToArray();
+            return new Score
+            {
+                Status = "OK",
+                Empty = false,
+                Prediction = Array.IndexOf(prediction, prediction.Max()),
+                Scores = prediction.Select(i => (double)i).ToList(),
+                Time = (DateTime.Now - now).TotalSeconds
+            };
         }
 
         private void buttonRecognize_Click(object sender, EventArgs e)
@@ -144,6 +200,27 @@ namespace MNISTViewer
             }
         }
 
+        private void buttonLoad_Click(object sender, EventArgs e)
+        {
+            if(openFileOnnx.ShowDialog() == DialogResult.OK &&
+                File.Exists(openFileOnnx.FileName))
+            {
+                var file = openFileOnnx.FileName;
+                var options = SessionOptions.Default;
+                options.AppendExecutionProvider(ExecutionProvider.Cpu);
+                _session = new InferenceSession(file, options);
+                textUrl.Enabled = false;
+            }
+        }
+
+        private void textUrl_DoubleClick(object sender, EventArgs e)
+        {
+            if(!textUrl.Enabled && _session != null)
+            {
+                textUrl.Enabled = true;
+                _session = null;
+            }
+        }
     }
 
     public class Score
@@ -156,5 +233,9 @@ namespace MNISTViewer
 
         [JsonProperty("scores")]
         public List<double> Scores { get; set; }
+
+        public string Status { get; set; }
+
+        public bool Empty { get; set; } = true;
     }
 }
