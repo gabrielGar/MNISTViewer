@@ -49,27 +49,26 @@
             this.hostCanvas.Location = new System.Drawing.Point(0, 0);
             this.hostCanvas.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.hostCanvas.Name = "hostCanvas";
-            this.hostCanvas.Size = new System.Drawing.Size(459, 300);
+            this.hostCanvas.Size = new System.Drawing.Size(516, 375);
             this.hostCanvas.TabIndex = 0;
             this.hostCanvas.Child = null;
             // 
             // textUrl
             // 
             this.textUrl.Font = new System.Drawing.Font("Segoe UI Light", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textUrl.Location = new System.Drawing.Point(14, 11);
+            this.textUrl.Location = new System.Drawing.Point(16, 14);
             this.textUrl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textUrl.Name = "textUrl";
-            this.textUrl.Size = new System.Drawing.Size(459, 42);
+            this.textUrl.Size = new System.Drawing.Size(516, 49);
             this.textUrl.TabIndex = 1;
             this.textUrl.TextChanged += new System.EventHandler(this.textUrl_TextChanged);
-            this.textUrl.DoubleClick += new System.EventHandler(this.textUrl_DoubleClick);
             // 
             // buttonRecognize
             // 
-            this.buttonRecognize.Location = new System.Drawing.Point(99, 366);
+            this.buttonRecognize.Location = new System.Drawing.Point(111, 458);
             this.buttonRecognize.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonRecognize.Name = "buttonRecognize";
-            this.buttonRecognize.Size = new System.Drawing.Size(93, 42);
+            this.buttonRecognize.Size = new System.Drawing.Size(105, 52);
             this.buttonRecognize.TabIndex = 3;
             this.buttonRecognize.Text = "Recognize";
             this.buttonRecognize.UseVisualStyleBackColor = true;
@@ -77,10 +76,10 @@
             // 
             // buttonClear
             // 
-            this.buttonClear.Location = new System.Drawing.Point(198, 366);
+            this.buttonClear.Location = new System.Drawing.Point(223, 458);
             this.buttonClear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonClear.Name = "buttonClear";
-            this.buttonClear.Size = new System.Drawing.Size(93, 42);
+            this.buttonClear.Size = new System.Drawing.Size(105, 52);
             this.buttonClear.TabIndex = 4;
             this.buttonClear.Text = "Clear";
             this.buttonClear.UseVisualStyleBackColor = true;
@@ -90,10 +89,10 @@
             // 
             this.labelPrediction.Font = new System.Drawing.Font("Segoe UI Light", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPrediction.ForeColor = System.Drawing.Color.Maroon;
-            this.labelPrediction.Location = new System.Drawing.Point(12, 410);
+            this.labelPrediction.Location = new System.Drawing.Point(14, 512);
             this.labelPrediction.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelPrediction.Name = "labelPrediction";
-            this.labelPrediction.Size = new System.Drawing.Size(461, 97);
+            this.labelPrediction.Size = new System.Drawing.Size(519, 121);
             this.labelPrediction.TabIndex = 5;
             this.labelPrediction.Text = "0";
             this.labelPrediction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -102,10 +101,10 @@
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.hostCanvas);
-            this.panel1.Location = new System.Drawing.Point(14, 55);
+            this.panel1.Location = new System.Drawing.Point(16, 69);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(461, 302);
+            this.panel1.Size = new System.Drawing.Size(518, 377);
             this.panel1.TabIndex = 6;
             // 
             // textResponse
@@ -115,28 +114,28 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textResponse.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textResponse.Font = new System.Drawing.Font("Segoe UI Light", 15.75F);
-            this.textResponse.Location = new System.Drawing.Point(480, 11);
+            this.textResponse.Location = new System.Drawing.Point(540, 14);
             this.textResponse.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textResponse.Name = "textResponse";
-            this.textResponse.Size = new System.Drawing.Size(625, 570);
+            this.textResponse.Size = new System.Drawing.Size(703, 712);
             this.textResponse.TabIndex = 7;
             this.textResponse.Text = "";
             // 
             // labelVersion
             // 
             this.labelVersion.AutoSize = true;
-            this.labelVersion.Location = new System.Drawing.Point(11, 566);
+            this.labelVersion.Location = new System.Drawing.Point(12, 708);
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(46, 17);
+            this.labelVersion.Size = new System.Drawing.Size(51, 20);
             this.labelVersion.TabIndex = 8;
             this.labelVersion.Text = "label1";
             // 
             // linkUpdates
             // 
             this.linkUpdates.AutoSize = true;
-            this.linkUpdates.Location = new System.Drawing.Point(359, 566);
+            this.linkUpdates.Location = new System.Drawing.Point(404, 708);
             this.linkUpdates.Name = "linkUpdates";
-            this.linkUpdates.Size = new System.Drawing.Size(115, 17);
+            this.linkUpdates.Size = new System.Drawing.Size(129, 20);
             this.linkUpdates.TabIndex = 9;
             this.linkUpdates.TabStop = true;
             this.linkUpdates.Text = "Update Available";
@@ -144,10 +143,10 @@
             // 
             // buttonLoad
             // 
-            this.buttonLoad.Location = new System.Drawing.Point(297, 366);
+            this.buttonLoad.Location = new System.Drawing.Point(334, 458);
             this.buttonLoad.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonLoad.Name = "buttonLoad";
-            this.buttonLoad.Size = new System.Drawing.Size(93, 42);
+            this.buttonLoad.Size = new System.Drawing.Size(105, 52);
             this.buttonLoad.TabIndex = 10;
             this.buttonLoad.Text = "Load Model";
             this.buttonLoad.UseVisualStyleBackColor = true;
@@ -157,12 +156,13 @@
             // 
             this.openFileOnnx.FileName = "model.onnx";
             this.openFileOnnx.Filter = "ONNX Models|*.onnx|All Files|*.*";
+            this.openFileOnnx.InitialDirectory = ".";
             // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1116, 590);
+            this.ClientSize = new System.Drawing.Size(1256, 738);
             this.Controls.Add(this.buttonLoad);
             this.Controls.Add(this.linkUpdates);
             this.Controls.Add(this.labelVersion);
@@ -174,7 +174,7 @@
             this.Controls.Add(this.textUrl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MinimumSize = new System.Drawing.Size(859, 447);
+            this.MinimumSize = new System.Drawing.Size(964, 545);
             this.Name = "Main";
             this.Text = "MNIST Viewer";
             this.panel1.ResumeLayout(false);
