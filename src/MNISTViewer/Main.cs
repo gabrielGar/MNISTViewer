@@ -14,11 +14,13 @@ using System.Windows.Ink;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Linq;
+using NLog;
 
 namespace MNISTViewer
 {
     public partial class Main : Form
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         private InkCanvas _inkCanvas;
         private InferenceSession _session = null;
         public Main()
@@ -154,6 +156,7 @@ namespace MNISTViewer
                 }
                 catch(Exception e)
                 {
+                    logger.Error(e, "PredictWeb Exception");
                     StringBuilder sb = new StringBuilder();
                     do
                     {
@@ -196,6 +199,7 @@ namespace MNISTViewer
             }
             catch (Exception e)
             {
+                logger.Error(e, "PredictLocal Exception");
                 StringBuilder sb = new StringBuilder();
                 do
                 {
@@ -233,12 +237,27 @@ namespace MNISTViewer
                 if (openFileOnnx.ShowDialog() == DialogResult.OK &&
                     File.Exists(openFileOnnx.FileName))
                 {
-                    var file = openFileOnnx.FileName;
-                    _session = new InferenceSession(file);
-                    textUrl.Text = $"Local Mode: {Path.GetFileName(file)}";
-                    textUrl.Enabled = false;
-                    buttonLoad.Text = "Use Service";
-                    Clear(false);
+                    try
+                    {
+                        var file = openFileOnnx.FileName;
+                        _session = new InferenceSession(file);
+                        textUrl.Text = $"Local Mode: {Path.GetFileName(file)}";
+                        textUrl.Enabled = false;
+                        buttonLoad.Text = "Use Service";
+                        Clear(false);
+                    }
+                    catch (Exception error)
+                    {
+                        logger.Error(error, "Load Model Exception");
+                        StringBuilder sb = new StringBuilder();
+                        do
+                        {
+                            sb.AppendLine($"Error: {error.GetType()}, {error.Message}");
+                            error = error.InnerException;
+                        } while (error != null);
+
+                        MessageBox.Show("Error", sb.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             else
