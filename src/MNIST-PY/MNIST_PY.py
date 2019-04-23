@@ -3,6 +3,7 @@ import argparse
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.onnx as onnx
 import torch.optim as optim
 from torchvision import datasets, transforms
 
@@ -16,6 +17,7 @@ class Net(nn.Module):
         self.fc2 = nn.Linear(500, 10)
 
     def forward(self, x):
+        x = x.view(-1, 1, 28, 28)
         x = F.relu(self.conv1(x))
         x = F.max_pool2d(x, 2, 2)
         x = F.relu(self.conv2(x))
@@ -111,8 +113,8 @@ def main():
 
     if (args.save_model):
         x = torch.randint(255, (1, 28*28), dtype=torch.float).to(device) / 255
-        onnx.export(model, x, onnx_file)
-        print('Saved onnx model to {}'.format(onnx_file))
+        onnx.export(model, x, "cnn_model.onnx")
+        print('Saved onnx model to {}'.format("cnn_model.onnx"))
         
 if __name__ == '__main__':
     main()

@@ -11,6 +11,9 @@
     <OutputPath>.</OutputPath>
     <Name>MNIST-PY</Name>
     <RootNamespace>MNIST-PY</RootNamespace>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>--epochs 1 --save-model </CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
