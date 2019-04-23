@@ -110,7 +110,9 @@ def main():
         test(args, model, device, test_loader)
 
     if (args.save_model):
-        torch.save(model.state_dict(),"mnist_cnn.pt")
+        x = torch.randint(255, (1, 28*28), dtype=torch.float).to(device) / 255
+        onnx.export(model, x, onnx_file)
+        print('Saved onnx model to {}'.format(onnx_file))
         
 if __name__ == '__main__':
     main()
