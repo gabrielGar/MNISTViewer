@@ -38,6 +38,8 @@
             this.textResponse = new System.Windows.Forms.RichTextBox();
             this.labelVersion = new System.Windows.Forms.Label();
             this.linkUpdates = new System.Windows.Forms.LinkLabel();
+            this.buttonLoad = new System.Windows.Forms.Button();
+            this.openFileOnnx = new System.Windows.Forms.OpenFileDialog();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,6 +47,7 @@
             // 
             this.hostCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hostCanvas.Location = new System.Drawing.Point(0, 0);
+            this.hostCanvas.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.hostCanvas.Name = "hostCanvas";
             this.hostCanvas.Size = new System.Drawing.Size(516, 375);
             this.hostCanvas.TabIndex = 0;
@@ -54,6 +57,7 @@
             // 
             this.textUrl.Font = new System.Drawing.Font("Segoe UI Light", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textUrl.Location = new System.Drawing.Point(16, 14);
+            this.textUrl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textUrl.Name = "textUrl";
             this.textUrl.Size = new System.Drawing.Size(516, 49);
             this.textUrl.TabIndex = 1;
@@ -61,7 +65,8 @@
             // 
             // buttonRecognize
             // 
-            this.buttonRecognize.Location = new System.Drawing.Point(159, 457);
+            this.buttonRecognize.Location = new System.Drawing.Point(111, 458);
+            this.buttonRecognize.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonRecognize.Name = "buttonRecognize";
             this.buttonRecognize.Size = new System.Drawing.Size(105, 52);
             this.buttonRecognize.TabIndex = 3;
@@ -71,7 +76,8 @@
             // 
             // buttonClear
             // 
-            this.buttonClear.Location = new System.Drawing.Point(270, 457);
+            this.buttonClear.Location = new System.Drawing.Point(223, 458);
+            this.buttonClear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonClear.Name = "buttonClear";
             this.buttonClear.Size = new System.Drawing.Size(105, 52);
             this.buttonClear.TabIndex = 4;
@@ -83,7 +89,7 @@
             // 
             this.labelPrediction.Font = new System.Drawing.Font("Segoe UI Light", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPrediction.ForeColor = System.Drawing.Color.Maroon;
-            this.labelPrediction.Location = new System.Drawing.Point(13, 512);
+            this.labelPrediction.Location = new System.Drawing.Point(14, 512);
             this.labelPrediction.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelPrediction.Name = "labelPrediction";
             this.labelPrediction.Size = new System.Drawing.Size(519, 121);
@@ -96,6 +102,7 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.hostCanvas);
             this.panel1.Location = new System.Drawing.Point(16, 69);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(518, 377);
             this.panel1.TabIndex = 6;
@@ -108,8 +115,9 @@
             this.textResponse.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textResponse.Font = new System.Drawing.Font("Segoe UI Light", 15.75F);
             this.textResponse.Location = new System.Drawing.Point(540, 14);
+            this.textResponse.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textResponse.Name = "textResponse";
-            this.textResponse.Size = new System.Drawing.Size(703, 711);
+            this.textResponse.Size = new System.Drawing.Size(703, 712);
             this.textResponse.TabIndex = 7;
             this.textResponse.Text = "";
             // 
@@ -133,11 +141,29 @@
             this.linkUpdates.Text = "Update Available";
             this.linkUpdates.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkUpdates_LinkClicked);
             // 
+            // buttonLoad
+            // 
+            this.buttonLoad.Location = new System.Drawing.Point(334, 458);
+            this.buttonLoad.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonLoad.Name = "buttonLoad";
+            this.buttonLoad.Size = new System.Drawing.Size(105, 52);
+            this.buttonLoad.TabIndex = 10;
+            this.buttonLoad.Text = "Load Model";
+            this.buttonLoad.UseVisualStyleBackColor = true;
+            this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
+            // 
+            // openFileOnnx
+            // 
+            this.openFileOnnx.FileName = "model.onnx";
+            this.openFileOnnx.Filter = "ONNX Models|*.onnx|All Files|*.*";
+            this.openFileOnnx.InitialDirectory = ".";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1255, 737);
+            this.ClientSize = new System.Drawing.Size(1256, 738);
+            this.Controls.Add(this.buttonLoad);
             this.Controls.Add(this.linkUpdates);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.textResponse);
@@ -147,7 +173,8 @@
             this.Controls.Add(this.buttonRecognize);
             this.Controls.Add(this.textUrl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(964, 547);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MinimumSize = new System.Drawing.Size(964, 545);
             this.Name = "Main";
             this.Text = "MNIST Viewer";
             this.panel1.ResumeLayout(false);
@@ -167,6 +194,8 @@
         private System.Windows.Forms.RichTextBox textResponse;
         private System.Windows.Forms.Label labelVersion;
         private System.Windows.Forms.LinkLabel linkUpdates;
+        private System.Windows.Forms.Button buttonLoad;
+        private System.Windows.Forms.OpenFileDialog openFileOnnx;
     }
 }
 
