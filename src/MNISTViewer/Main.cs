@@ -110,7 +110,7 @@ namespace MNISTViewer
                 sb.AppendLine("Scores:");
                 int i = 0;
                 foreach (var s in score.Scores)
-                    sb.AppendLine($"\t{i++}: {s:P}");
+                    sb.AppendLine($"\t{i++}: {s}");
 
                 sb.AppendLine($"Prediction: {score.Prediction}");
                 sb.AppendLine($"Time: {score.Time}");
@@ -174,7 +174,8 @@ namespace MNISTViewer
             Tensor<float> x = new DenseTensor<float>(digit.Length);
 
             // normalize
-            for (int i = 0; i < digit.Length; i++) x[i] = digit[i] / 255;
+            for (int i = 0; i < digit.Length; i++)
+                x[i] = ((digit[i] / 255) - 0.1307f) / 0.3081f;
 
             var input = new List<NamedOnnxValue>() {
                 NamedOnnxValue.CreateFromTensor("0", x)
@@ -187,12 +188,14 @@ namespace MNISTViewer
                                          .AsTensor<float>()
                                          .ToArray();
 
+                var dPrediction = Array.ConvertAll(prediction, v => (double)v);
+
                 return new Score
                 {
                     Status = $"Local Mode: {_session}",
                     Empty = false,
-                    Prediction = Array.IndexOf(prediction, prediction.Max()),
-                    Scores = prediction.Select(i => (double)i).ToList(),
+                    Prediction = Array.IndexOf(dPrediction, dPrediction.Max()),
+                    Scores = dPrediction.Select(Math.Exp).ToList(),
                     Time = (DateTime.Now - now).TotalSeconds
                 };
             }
